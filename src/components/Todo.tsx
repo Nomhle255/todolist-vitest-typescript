@@ -14,7 +14,7 @@ function Todo() {
     if (!trimmed) return;
 
     const newTodo: Todo = {
-      userId: crypto.randomUUID(),
+      userId: "1",
       id: crypto.randomUUID(),
       title: trimmed,
       completed: false,
@@ -24,7 +24,7 @@ function Todo() {
     setText("");
   };
 
-  function toodleCheckbox(id: string) {
+  function handleToggleComplete(id: string) {
     setTodos((prev) =>
       prev.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
@@ -51,7 +51,7 @@ function Todo() {
       </div>
       <TodoList
         todos={todos}
-        toodleCheckbox={toodleCheckbox}
+        toggleCheckbox={handleToggleComplete}
         onDelete={handleDelete}
       />
     </form>

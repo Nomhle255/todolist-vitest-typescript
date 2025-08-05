@@ -1,5 +1,9 @@
 import "@testing-library/jest-dom";
-import { render, screen } from "@testing-library/react";
+import {
+  render,
+  screen,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import TodoList from "../components/TodoList";
 import mockData from "../mockData";
 import userEvent from "@testing-library/user-event";
@@ -15,7 +19,7 @@ const StatefulWithDelete = () => {
     );
   const remove = (id: string) =>
     setTodos((prev) => prev.filter((t) => t.id !== id));
-  return <TodoList todos={todos} toodleCheckbox={toggle} onDelete={remove} />;
+  return <TodoList todos={todos} toggleCheckbox={toggle} onDelete={remove} />;
 };
 
 describe("TodoList component", () => {
@@ -23,7 +27,7 @@ describe("TodoList component", () => {
     render(
       <TodoList
         todos={mockData}
-        toodleCheckbox={() => {}}
+        toggleCheckbox={() => {}}
         onDelete={() => {}}
       />
     );
@@ -34,7 +38,7 @@ describe("TodoList component", () => {
     render(
       <TodoList
         todos={mockData}
-        toodleCheckbox={() => {}}
+        toggleCheckbox={() => {}}
         onDelete={() => {}}
       />
     );
@@ -56,14 +60,16 @@ describe("TodoList component", () => {
     expect(checkBox).toBeChecked();
   });
 
-  it("delete a doto from list when delete button is clicked", async () => {
+  it("delete a todo from list when delete button is clicked", async () => {
     render(<StatefulWithDelete />);
 
     const user = userEvent.setup();
 
     expect(screen.getByText(/Eat breakfast/i)).toBeInTheDocument();
 
-    const deleteButton = screen.getByRole("button", { name: /delete Eat breakfast/i });
+    const deleteButton = screen.getByRole("button", {
+      name: /delete Eat breakfast/i,
+    });
     await user.click(deleteButton);
 
     expect(screen.queryByText(/Eat breakfast/i)).not.toBeInTheDocument();

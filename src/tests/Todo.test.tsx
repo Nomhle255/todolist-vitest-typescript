@@ -18,4 +18,15 @@ describe("Todo component", () => {
     const newTodo = await screen.findByText(/Learn TypeScript/i);
     expect(newTodo).toBeInTheDocument();
   });
+
+  it("clears input after adding todo", async () => {
+    render(<Todo />);
+    const user = userEvent.setup();
+
+    const input = screen.getByPlaceholderText(/Add new todo here/i);
+    await user.type(input, "Test todo");
+    await user.click(screen.getByRole("button", { name: /add todo/i }));
+
+    expect(input).toHaveValue("");
+  });
 });

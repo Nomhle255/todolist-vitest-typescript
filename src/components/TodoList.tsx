@@ -3,13 +3,13 @@ import type { Todo } from "../types/todo";
 
 export type TodoListProps = {
   todos: Todo[];
-  toodleCheckbox: (id: string) => void;
+  toggleCheckbox: (id: string) => void;
   onDelete: (id: string) => void;
 };
 
 const TodoList: React.FC<TodoListProps> = ({
   todos,
-  toodleCheckbox,
+  toggleCheckbox,
   onDelete,
 }) => {
   if (todos.length === 0) {
@@ -23,13 +23,18 @@ const TodoList: React.FC<TodoListProps> = ({
           <label>
             <input
               type="checkbox"
-              checked={todos.completed}
-              onChange={() => toodleCheckbox(todo.id)}
+              checked={todo.completed}
+              onChange={() => toggleCheckbox(todo.id)}
               aria-label={todo.title}
             />
             {todo.title}
           </label>
-          <button aria-label={`Delete ${todo.title}`} onClick={() => onDelete(todo.id)}>delete</button>
+          <button
+            aria-label={`Delete ${todo.title}`}
+            onClick={() => onDelete(todo.id)}
+          >
+            delete
+          </button>
         </li>
       ))}
     </ul>
